@@ -12,7 +12,16 @@ namespace AsyncOnly
     {
         static void Main(string[] args)
         {
+            try
+            {
+                DoIt().GetAwaiter().GetResult();
+            }
+            catch
+            {
+            }
+
             var stopWatch = new Stopwatch();
+            Console.WriteLine(GC.GetTotalMemory(false));
             stopWatch.Start();
             try
             {
@@ -23,6 +32,7 @@ namespace AsyncOnly
                 Console.WriteLine(exception);
             }
             stopWatch.Stop();
+            Console.WriteLine(GC.GetTotalMemory(false));
             Console.WriteLine();
             Console.WriteLine(stopWatch.Elapsed);
             Console.ReadLine();
