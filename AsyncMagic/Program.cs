@@ -109,6 +109,7 @@ namespace AsyncMagic
                     try
                     {
                         await continuation.Catch(dispatchInfo).ConfigureAwait(false);
+                        dispatchInfo = null;
                     }
                     catch (Exception e)
                     {
