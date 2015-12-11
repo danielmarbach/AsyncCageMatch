@@ -16,21 +16,29 @@ namespace AsyncOnly
             {
                 DoIt().GetAwaiter().GetResult();
             }
-            catch
-            {
-            }
-
-            var stopWatch = new Stopwatch();
-            Console.WriteLine(GC.GetTotalMemory(false));
-            stopWatch.Start();
-            try
-            {
-                DoIt().GetAwaiter().GetResult();
-            }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
             }
+
+            Console.WriteLine();
+
+            var stopWatch = new Stopwatch();
+            Console.WriteLine(GC.GetTotalMemory(false));
+            Console.WriteLine();
+            stopWatch.Start();
+
+            Parallel.For(0, 100, new ParallelOptions { MaxDegreeOfParallelism = 5 }, i =>
+              {
+                  try
+                  {
+                      DoIt().GetAwaiter().GetResult();
+                  }
+                  catch
+                  {
+                  }
+
+              });
             stopWatch.Stop();
             Console.WriteLine(GC.GetTotalMemory(false));
             Console.WriteLine();

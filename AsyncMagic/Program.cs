@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mime;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -12,25 +13,29 @@ namespace AsyncMagic
     {
         static void Main(string[] args)
         {
-            try
-            {
-                DoIt().GetAwaiter().GetResult();
-            }
-            catch
-            {
-            }
-
-            var stopWatch = new Stopwatch();
-            Console.WriteLine(GC.GetTotalMemory(false));
-            stopWatch.Start();
-            try
-            {
-                DoIt().GetAwaiter().GetResult();
-            }
-            catch (Exception exception)
+            var exception = DoIt().GetAwaiter().GetResult();
+            if (exception != null)
             {
                 Console.WriteLine(exception);
             }
+
+            Console.WriteLine();
+
+            var stopWatch = new Stopwatch();
+            Console.WriteLine(GC.GetTotalMemory(false));
+            Console.WriteLine();
+            stopWatch.Start();
+            Parallel.For(0, 100, new ParallelOptions { MaxDegreeOfParallelism = 5 }, i =>
+            {
+                try
+                {
+                    DoIt().GetAwaiter().GetResult();
+                }
+                catch
+                {
+                }
+
+            });
             stopWatch.Stop();
             Console.WriteLine(GC.GetTotalMemory(false));
             Console.WriteLine();
@@ -38,7 +43,7 @@ namespace AsyncMagic
             Console.ReadLine();
         }
 
-        private static Task DoIt()
+        private static Task<Exception> DoIt()
         {
             var behaviors = new List<IBehavior>
             {
@@ -76,10 +81,10 @@ namespace AsyncMagic
             this.behaviors = behaviors.ToList();
         }
 
-        public async Task Invoke(BehaviorContext context)
+        public async Task<Exception> Invoke(BehaviorContext context)
         {
             var continuations = new Stack<BehaviorContinuation>();
-            ExceptionDispatchInfo dispatchInfo = null;
+            Exception exception = null;
             foreach (var behavior in behaviors)
             {
                 var continuation = BehaviorContinuation.Empty;
@@ -89,7 +94,7 @@ namespace AsyncMagic
                 }
                 catch (Exception e)
                 {
-                    dispatchInfo = ExceptionDispatchInfo.Capture(e);
+                    exception = e;
                     break;
                 }
                 finally
@@ -100,7 +105,7 @@ namespace AsyncMagic
 
             foreach (var continuation in continuations)
             {
-                if (dispatchInfo == null)
+                if (exception == null)
                 {
                     await continuation.After().ConfigureAwait(false);
                 }
@@ -110,20 +115,20 @@ namespace AsyncMagic
                     {
                         if (continuation.Catch != null)
                         {
-                            await continuation.Catch(dispatchInfo).ConfigureAwait(false);
-                            dispatchInfo = null;
+                            await continuation.Catch(exception).ConfigureAwait(false);
+                            exception = null;
                         }
                     }
                     catch (Exception e)
                     {
-                        dispatchInfo = ExceptionDispatchInfo.Capture(e);
+                        exception = e;
                     }
                 }
 
                 await continuation.Finally().ConfigureAwait(false);
             }
 
-            dispatchInfo?.Throw();
+            return exception;
         }
     }
 
@@ -132,7 +137,7 @@ namespace AsyncMagic
         public Func<Task> After { get; set; } = () => Task.CompletedTask;
         public Func<Task> Finally { get; set; } = () => Task.CompletedTask;
 
-        public Func<ExceptionDispatchInfo, Task> Catch { get; set; }
+        public Func<Exception, Task> Catch { get; set; }
 
         public static BehaviorContinuation Empty = new BehaviorContinuation();
 
@@ -147,6 +152,15 @@ namespace AsyncMagic
     public interface IBehavior
     {
         Task<BehaviorContinuation> Invoke(BehaviorContext context);
+    }
+
+    public class ModifiesContextBehavior : IBehavior
+    {
+        public Task<BehaviorContinuation> Invoke(BehaviorContext context)
+        {
+            // sync code
+            return BehaviorContinuation.Empty;
+        }
     }
 
     public class DelayBehavior1 : IBehavior
