@@ -108,8 +108,11 @@ namespace AsyncMagic
                 {
                     try
                     {
-                        await continuation.Catch(dispatchInfo).ConfigureAwait(false);
-                        dispatchInfo = null;
+                        if (continuation.Catch != null)
+                        {
+                            await continuation.Catch(dispatchInfo).ConfigureAwait(false);
+                            dispatchInfo = null;
+                        }
                     }
                     catch (Exception e)
                     {
@@ -129,7 +132,7 @@ namespace AsyncMagic
         public Func<Task> After { get; set; } = () => Task.CompletedTask;
         public Func<Task> Finally { get; set; } = () => Task.CompletedTask;
 
-        public Func<ExceptionDispatchInfo, Task> Catch { get; set; } = ex => Task.CompletedTask;
+        public Func<ExceptionDispatchInfo, Task> Catch { get; set; }
 
         public static BehaviorContinuation Empty = new BehaviorContinuation();
 
