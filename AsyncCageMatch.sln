@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncOnly", "AsyncOnly\Asyn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncMagic", "AsyncMagic\AsyncMagic.csproj", "{753CFFD5-A1F5-45C3-875A-D9A39091141B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncTrampolining", "AsyncTrampolining\AsyncTrampolining.csproj", "{4F6923EF-23A9-4EB5-AB50-08A62049B8AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{753CFFD5-A1F5-45C3-875A-D9A39091141B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753CFFD5-A1F5-45C3-875A-D9A39091141B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{753CFFD5-A1F5-45C3-875A-D9A39091141B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F6923EF-23A9-4EB5-AB50-08A62049B8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F6923EF-23A9-4EB5-AB50-08A62049B8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F6923EF-23A9-4EB5-AB50-08A62049B8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F6923EF-23A9-4EB5-AB50-08A62049B8AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
