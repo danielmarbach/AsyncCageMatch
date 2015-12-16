@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncTrampolining", "AsyncT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncTrampoliningWithoutDolls", "AsyncTrampoliningWithoutDolls\AsyncTrampoliningWithoutDolls.csproj", "{EE215C39-20A5-4DB0-9461-12CC9C214C16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncPartialDolls", "AsyncPartialDolls\AsyncPartialDolls.csproj", "{E6CCCAD1-B779-48DB-880C-DA9E5380DD38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EE215C39-20A5-4DB0-9461-12CC9C214C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE215C39-20A5-4DB0-9461-12CC9C214C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE215C39-20A5-4DB0-9461-12CC9C214C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CCCAD1-B779-48DB-880C-DA9E5380DD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CCCAD1-B779-48DB-880C-DA9E5380DD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CCCAD1-B779-48DB-880C-DA9E5380DD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CCCAD1-B779-48DB-880C-DA9E5380DD38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
